@@ -15,12 +15,12 @@ module.exports = {
 			const flagData = await db.getObjects(flagIds.map(id => `flag:${id}`));
 			for (const flagObj of flagData) {
 				/* eslint-disable no-await-in-loop */
-				if (flagObj) {
+				if (flagObj) { // if flagObj is not NULL. Possibly can refactor
 					const { targetId } = flagObj;
-					if (targetId) {
+					if (targetId) { // if targetId is not NULL. Pretty sure I can refactor with a simple &&
 						if (flagObj.type === 'post') {
 							const targetUid = await posts.getPostField(targetId, 'uid');
-							if (targetUid) {
+							if (targetUid) { // if targetUid is not NULL
 								await db.setObjectField(`flag:${flagObj.flagId}`, 'targetUid', targetUid);
 							}
 						} else if (flagObj.type === 'user') {
