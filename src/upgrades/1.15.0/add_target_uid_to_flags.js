@@ -15,7 +15,6 @@ module.exports = {
 			const flagData = await db.getObjects(flagIds.map(id => `flag:${id}`));
 			for (const flagObj of flagData) {
 				/* eslint-disable no-await-in-loop */
-
 				//Refactored to "continue" to reduce nested if statements
 				if (!flagObj) continue; 
 				const { targetId } = flagObj;
@@ -28,8 +27,6 @@ module.exports = {
 				} else if (flagObj.type === 'user') {
 					await db.setObjectField(`flag:${flagObj.flagId}`, 'targetUid', targetId);
 				}
-				
-				
 			}
 		}, {
 			progress: progress,
