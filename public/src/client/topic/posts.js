@@ -69,10 +69,21 @@ define('forum/topic/posts', [
 			post.display_delete_tools = (ajaxify.data.privileges['posts:delete'] && post.selfPost) || ajaxify.data.privileges.isAdminOrMod;
 			post.display_moderator_tools = post.display_edit_tools || post.display_delete_tools;
 			post.display_move_tools = ajaxify.data.privileges.isAdminOrMod;
-			post.display_post_menu = ajaxify.data.privileges.isAdminOrMod ||
-				(post.selfPost && !ajaxify.data.locked && !post.deleted) ||
-				(post.selfPost && post.deleted && parseInt(post.deleterUid, 10) === parseInt(app.user.uid, 10)) ||
-				((app.user.uid || ajaxify.data.postSharing.length) && !post.deleted);
+			
+			// Minor refactor; just broke up long binary statement into
+			// multiple shorter ones.
+			post.display_post_menu = false;
+
+			if (ajaxify.data.privileges.isAdminOrMod) {
+				post.display_post_menu = true;
+			} else if (post.selfPost && !ajaxify.data.locked && !post.deleted) {
+				post.display_post_menu = true;
+			} else if (post.selfPost && post.deleted && parseInt(post.deleterUid, 10) === parseInt(app.user.uid, 10)) {
+				post.display_post_menu = true;
+			} else if ((app.user.uid || ajaxify.data.postSharing.length) && !post.deleted) {
+				post.display_post_menu = true;
+			}
+
 		});
 		console.log('modifyPostsByPrivileges() executed.\n');
 		
