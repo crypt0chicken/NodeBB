@@ -34,6 +34,7 @@ define('forum/topic/posts', [
 		data.posts[0].timestamp = data.posts[0].topic.scheduled ? data.posts[0].timestamp : Date.now() - 1000;
 		data.posts[0].timestampISO = utils.toISOString(data.posts[0].timestamp);
 
+		console.log('modifyPostsByPrivileges() about to execute.\n');
 		Posts.modifyPostsByPrivileges(data.posts);
 
 		updatePostCounts(data.posts);
@@ -59,6 +60,7 @@ define('forum/topic/posts', [
 	}
 
 	Posts.modifyPostsByPrivileges = function (posts) {
+
 		posts.forEach(function (post) {
 			post.selfPost = !!app.user.uid && parseInt(post.uid, 10) === parseInt(app.user.uid, 10);
 			post.topicOwnerPost = parseInt(post.uid, 10) === parseInt(ajaxify.data.uid, 10);
@@ -72,6 +74,8 @@ define('forum/topic/posts', [
 				(post.selfPost && post.deleted && parseInt(post.deleterUid, 10) === parseInt(app.user.uid, 10)) ||
 				((app.user.uid || ajaxify.data.postSharing.length) && !post.deleted);
 		});
+		console.log('modifyPostsByPrivileges() executed.\n');
+		
 	};
 
 	function updatePostCounts(posts) {
