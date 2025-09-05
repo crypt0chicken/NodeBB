@@ -34,7 +34,6 @@ define('forum/topic/posts', [
 		data.posts[0].timestamp = data.posts[0].topic.scheduled ? data.posts[0].timestamp : Date.now() - 1000;
 		data.posts[0].timestampISO = utils.toISOString(data.posts[0].timestamp);
 
-		console.log('modifyPostsByPrivileges() about to execute.\n');
 		Posts.modifyPostsByPrivileges(data.posts);
 
 		updatePostCounts(data.posts);
@@ -85,7 +84,6 @@ define('forum/topic/posts', [
 			}
 
 		});
-		console.log('modifyPostsByPrivileges() executed.\n');
 		
 	};
 
